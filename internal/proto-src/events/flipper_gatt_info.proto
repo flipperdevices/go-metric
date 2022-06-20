@@ -1,0 +1,7 @@
+syntax = "proto3";
+package metric.events;
+
+
+message FlipperGattInfo {
+  string flipper_version = 1;
+}
