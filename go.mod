@@ -1,4 +1,4 @@
-module flippermetric
+module go-metric
 
 go 1.19
 
