@@ -1,4 +1,4 @@
-module go-metric
+module github.com/flipperdevices/go-metric
 
 go 1.19
 
