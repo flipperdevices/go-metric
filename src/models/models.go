@@ -1,16 +1,17 @@
-package main
+package models
 
 import (
+	"time"
+
 	"github.com/uptrace/go-clickhouse/ch"
 	"github.com/uptrace/go-clickhouse/ch/chschema"
-	"time"
 )
 
 type Platform int32
 
 const (
-	ANDROID Platform = 0
-	IOS              = 1
+	ANDROID Platform = iota
+	IOS
 )
 
 type AppOpen struct {
@@ -111,12 +112,12 @@ type SynchronizationEnd struct {
 type UpdateStatus int32
 
 const (
-	COMPLETED       UpdateStatus = 0
-	CANCELED                     = 1
-	FAILED_DOWNLOAD              = 2
-	FAILED_PREPARE               = 3
-	FAILED_UPLOAD                = 4
-	FAILED                       = 5
+	COMPLETED UpdateStatus = iota
+	CANCELED
+	FAILED_DOWNLOAD
+	FAILED_PREPARE
+	FAILED_UPLOAD
+	FAILED
 )
 
 type UpdateFlipperEnd struct {
