@@ -35,9 +35,9 @@ func report(w http.ResponseWriter, req *http.Request) {
 	var platform Platform
 	switch r.Platform {
 	case pb.MetricReportRequest_ANDROID:
-		platform = android
+		platform = ANDROID
 	case pb.MetricReportRequest_IOS:
-		platform = ios
+		platform = IOS
 	}
 
 	for _, event := range r.Events {
@@ -67,13 +67,26 @@ func sendResponse(w http.ResponseWriter) {
 	}
 }
 
+func createTables(ctx context.Context) {
+	db.NewCreateTable().Model((*AppOpen)(nil)).Exec(ctx)
+	db.NewCreateTable().Model((*ExperimentalOpenFileManager)(nil)).Exec(ctx)
+	db.NewCreateTable().Model((*ExperimentalOpenScreenStreaming)(nil)).Exec(ctx)
+	db.NewCreateTable().Model((*FlipperGattInfo)(nil)).Exec(ctx)
+	db.NewCreateTable().Model((*FlipperRpcInfo)(nil)).Exec(ctx)
+	db.NewCreateTable().Model((*OpenEdit)(nil)).Exec(ctx)
+	db.NewCreateTable().Model((*OpenEmulate)(nil)).Exec(ctx)
+	db.NewCreateTable().Model((*OpenSaveKey)(nil)).Exec(ctx)
+	db.NewCreateTable().Model((*OpenShare)(nil)).Exec(ctx)
+	db.NewCreateTable().Model((*SynchronizationEnd)(nil)).Exec(ctx)
+	db.NewCreateTable().Model((*UpdateFlipperEnd)(nil)).Exec(ctx)
+	db.NewCreateTable().Model((*UpdateFlipperStart)(nil)).Exec(ctx)
+}
+
 func main() {
 	ctx := context.Background()
 	db.AddQueryHook(chdebug.NewQueryHook(chdebug.WithVerbose(true)))
-	err := db.ResetModel(ctx, (*AppOpen)(nil))
-	if err != nil {
-		panic(err)
-	}
+	//createTables(ctx)
+	applyMigration(ctx)
 
 	if err := db.Ping(ctx); err != nil {
 		panic(err)
