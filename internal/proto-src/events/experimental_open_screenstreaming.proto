@@ -1,5 +1,0 @@
-syntax = "proto3";
-package metric.events;
-
-
-message ExperimentalOpenScreenStreaming {}
