@@ -1,0 +1,8 @@
+version: "3.9"
+
+services:
+  clickhouse:
+    image: "clickhouse/clickhouse-server:latest"
+    ports:
+      - "18123:8123"
+      - "19000:9000"
