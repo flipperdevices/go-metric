@@ -11,7 +11,9 @@ type Platform int32
 
 const (
 	ANDROID Platform = iota
+	ANDROID_DEBUG
 	IOS
+	IOS_DEBUG
 )
 
 type OpenTarget int32

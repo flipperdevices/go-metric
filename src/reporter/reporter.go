@@ -48,8 +48,12 @@ func (r *Reporter) Report(w http.ResponseWriter, req *http.Request) {
 	switch request.Platform {
 	case pb.MetricReportRequest_ANDROID:
 		platform = models.ANDROID
+	case pb.MetricReportRequest_ANDROID_DEBUG:
+		platform = models.ANDROID_DEBUG
 	case pb.MetricReportRequest_IOS:
 		platform = models.IOS
+	case pb.MetricReportRequest_IOS_DEBUG:
+		platform = models.IOS_DEBUG
 	}
 
 	for _, event := range request.Events {
