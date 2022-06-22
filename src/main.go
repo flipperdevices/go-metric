@@ -23,13 +23,10 @@ func main() {
 	repo := repository.New(db)
 
 	db.AddQueryHook(chdebug.NewQueryHook(chdebug.WithVerbose(true)))
-	//if err := repo.CreateTables(ctx); err != nil {
-	//	panic(err)
-	//}
 
-	//if err := repo.ApplyMigration(ctx); err != nil {
-	//	panic(err)
-	//}
+	if err := repo.ApplyMigration(ctx); err != nil {
+		panic(err)
+	}
 
 	report := reporter.New(repo)
 

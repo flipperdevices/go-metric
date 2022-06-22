@@ -151,25 +151,3 @@ func (r *Repository) ApplyMigration(ctx context.Context) error {
 	log.Println("End create migration")
 	return nil
 }
-
-func (r *Repository) CreateTables(ctx context.Context) error {
-	if _, err := r.db.NewCreateTable().Model((*models.Open)(nil)).Exec(ctx); err != nil {
-		return err
-	}
-	if _, err := r.db.NewCreateTable().Model((*models.FlipperGattInfo)(nil)).Exec(ctx); err != nil {
-		return err
-	}
-	if _, err := r.db.NewCreateTable().Model((*models.FlipperRpcInfo)(nil)).Exec(ctx); err != nil {
-		return err
-	}
-	if _, err := r.db.NewCreateTable().Model((*models.SynchronizationEnd)(nil)).Exec(ctx); err != nil {
-		return err
-	}
-	if _, err := r.db.NewCreateTable().Model((*models.UpdateFlipperEnd)(nil)).Exec(ctx); err != nil {
-		return err
-	}
-	if _, err := r.db.NewCreateTable().Model((*models.UpdateFlipperStart)(nil)).Exec(ctx); err != nil {
-		return err
-	}
-	return nil
-}
