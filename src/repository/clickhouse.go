@@ -35,23 +35,29 @@ func (r *Repository) SaveEvent(
 ) error {
 	var e any
 	switch unpackedEvent := event.GetEvent().(type) {
-	case *proto.MetricEventsCollection_AppOpen:
-		e = models.AppOpen{
-			UUID:     uid,
-			Platform: platform,
-			Time:     time.Now(),
+	case *proto.MetricEventsCollection_Open:
+		var target models.OpenTarget
+		switch unpackedEvent.Open.Target {
+		case events.Open_APP:
+			target = models.APP
+		case events.Open_SAVE_KEY:
+			target = models.SAVE_KEY
+		case events.Open_EMULATE:
+			target = models.EMULATE
+		case events.Open_EDIT:
+			target = models.EDIT
+		case events.Open_SHARE:
+			target = models.SHARE
+		case events.Open_EXPERIMENTAL_FM:
+			target = models.EXPERIMENTAL_FM
+		case events.Open_EXPERIMENTAL_SCREENSTREAMING:
+			target = models.EXPERIMENTAL_SCREENSTREAMING
 		}
-	case *proto.MetricEventsCollection_ExperimentalOpenFm:
-		e = models.ExperimentalOpenFileManager{
+		e = models.Open{
 			UUID:     uid,
 			Platform: platform,
 			Time:     time.Now(),
-		}
-	case *proto.MetricEventsCollection_ExperimentalOpenScreenstreaming:
-		e = models.ExperimentalOpenScreenStreaming{
-			UUID:     uid,
-			Platform: platform,
-			Time:     time.Now(),
+			Target:   target,
 		}
 	case *proto.MetricEventsCollection_FlipperGattInfo:
 		e = models.FlipperGattInfo{
@@ -70,30 +76,6 @@ func (r *Repository) SaveEvent(
 			InternalTotalBytes: unpackedEvent.FlipperRpcInfo.InternalTotalByte,
 			ExternalFreeBytes:  unpackedEvent.FlipperRpcInfo.ExternalFreeByte,
 			ExternalTotalBytes: unpackedEvent.FlipperRpcInfo.ExternalTotalByte,
-		}
-	case *proto.MetricEventsCollection_OpenEdit:
-		e = models.OpenEdit{
-			UUID:     uid,
-			Platform: platform,
-			Time:     time.Now(),
-		}
-	case *proto.MetricEventsCollection_OpenEmulate:
-		e = models.OpenEmulate{
-			UUID:     uid,
-			Platform: platform,
-			Time:     time.Now(),
-		}
-	case *proto.MetricEventsCollection_OpenSaveKey:
-		e = models.OpenSaveKey{
-			UUID:     uid,
-			Platform: platform,
-			Time:     time.Now(),
-		}
-	case *proto.MetricEventsCollection_OpenShare:
-		e = models.OpenShare{
-			UUID:     uid,
-			Platform: platform,
-			Time:     time.Now(),
 		}
 	case *proto.MetricEventsCollection_SynchronizationEnd:
 		e = models.SynchronizationEnd{
@@ -171,31 +153,13 @@ func (r *Repository) ApplyMigration(ctx context.Context) error {
 }
 
 func (r *Repository) CreateTables(ctx context.Context) error {
-	if _, err := r.db.NewCreateTable().Model((*models.AppOpen)(nil)).Exec(ctx); err != nil {
-		return err
-	}
-	if _, err := r.db.NewCreateTable().Model((*models.ExperimentalOpenFileManager)(nil)).Exec(ctx); err != nil {
-		return err
-	}
-	if _, err := r.db.NewCreateTable().Model((*models.ExperimentalOpenScreenStreaming)(nil)).Exec(ctx); err != nil {
+	if _, err := r.db.NewCreateTable().Model((*models.Open)(nil)).Exec(ctx); err != nil {
 		return err
 	}
 	if _, err := r.db.NewCreateTable().Model((*models.FlipperGattInfo)(nil)).Exec(ctx); err != nil {
 		return err
 	}
 	if _, err := r.db.NewCreateTable().Model((*models.FlipperRpcInfo)(nil)).Exec(ctx); err != nil {
-		return err
-	}
-	if _, err := r.db.NewCreateTable().Model((*models.OpenEdit)(nil)).Exec(ctx); err != nil {
-		return err
-	}
-	if _, err := r.db.NewCreateTable().Model((*models.OpenEmulate)(nil)).Exec(ctx); err != nil {
-		return err
-	}
-	if _, err := r.db.NewCreateTable().Model((*models.OpenSaveKey)(nil)).Exec(ctx); err != nil {
-		return err
-	}
-	if _, err := r.db.NewCreateTable().Model((*models.OpenShare)(nil)).Exec(ctx); err != nil {
 		return err
 	}
 	if _, err := r.db.NewCreateTable().Model((*models.SynchronizationEnd)(nil)).Exec(ctx); err != nil {

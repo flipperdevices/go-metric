@@ -14,28 +14,25 @@ const (
 	IOS
 )
 
-type AppOpen struct {
+type OpenTarget int32
+
+const (
+	APP OpenTarget = iota
+	SAVE_KEY
+	EMULATE
+	EDIT
+	SHARE
+	EXPERIMENTAL_FM
+	EXPERIMENTAL_SCREENSTREAMING
+)
+
+type Open struct {
 	ch.CHModel `ch:"table:app_open"`
 
 	UUID     chschema.UUID
 	Platform Platform
 	Time     time.Time `ch:",pk"`
-}
-
-type ExperimentalOpenFileManager struct {
-	ch.CHModel `ch:"table:experimental_open_fm"`
-
-	UUID     chschema.UUID
-	Platform Platform
-	Time     time.Time `ch:",pk"`
-}
-
-type ExperimentalOpenScreenStreaming struct {
-	ch.CHModel `ch:"table:experimental_open_screenstreaming"`
-
-	UUID     chschema.UUID
-	Platform Platform
-	Time     time.Time `ch:",pk"`
+	Target   OpenTarget
 }
 
 type FlipperGattInfo struct {
@@ -60,38 +57,6 @@ type FlipperRpcInfo struct {
 	InternalTotalBytes int64
 	ExternalFreeBytes  int64
 	ExternalTotalBytes int64
-}
-
-type OpenEdit struct {
-	ch.CHModel `ch:"table:open_edit"`
-
-	UUID     chschema.UUID
-	Platform Platform
-	Time     time.Time `ch:",pk"`
-}
-
-type OpenEmulate struct {
-	ch.CHModel `ch:"table:open_emulate"`
-
-	UUID     chschema.UUID
-	Platform Platform
-	Time     time.Time `ch:",pk"`
-}
-
-type OpenSaveKey struct {
-	ch.CHModel `ch:"table:open_save_key"`
-
-	UUID     chschema.UUID
-	Platform Platform
-	Time     time.Time `ch:",pk"`
-}
-
-type OpenShare struct {
-	ch.CHModel `ch:"table:open_share"`
-
-	UUID     chschema.UUID
-	Platform Platform
-	Time     time.Time `ch:",pk"`
 }
 
 type SynchronizationEnd struct {

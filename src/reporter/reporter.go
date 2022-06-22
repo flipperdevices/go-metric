@@ -61,23 +61,5 @@ func (r *Reporter) Report(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	log.Print(request.String())
-	sendResponse(w)
-}
-
-func sendResponse(w http.ResponseWriter) {
-	response, err := proto.Marshal(&pb.MetricReportResponse{
-		Status: pb.MetricReportResponse_OK,
-	})
-	if err != nil {
-		log.Print("Failed marshal response", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	_, err = w.Write(response)
-	if err != nil {
-		// Unable to set status after attempt to write body, just log.
-		log.Print("Failed write response", err)
-		return
-	}
+	w.WriteHeader(http.StatusCreated)
 }
