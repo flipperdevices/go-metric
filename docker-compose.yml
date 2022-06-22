@@ -3,6 +3,22 @@ version: "3.9"
 services:
   clickhouse:
     image: "clickhouse/clickhouse-server:latest"
+    environment:
+      CLICKHOUSE_DB: "metric"
+    restart: always
+    volumes:
+      - clickhouse:/var/lib/clickhouse/
+  app:
+    build: .
+    restart: always
+    depends_on:
+      - clickhouse
     ports:
-      - "18123:8123"
-      - "19000:9000"
+      - "8081:8081"
+    environment:
+      DB_ADDR: 'clickhouse:9000'
+      DB_NAME: 'metric'
+
+volumes:
+  clickhouse:
+    driver: local

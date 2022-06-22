@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
+	"github.com/caarlos0/env/v6"
+	"github.com/flipperdevices/go-metric/src/models"
+	"github.com/uptrace/go-clickhouse/ch"
 	"log"
 	"net/http"
-
-	"github.com/uptrace/go-clickhouse/ch"
-	"github.com/uptrace/go-clickhouse/chdebug"
 
 	"github.com/flipperdevices/go-metric/src/reporter"
 	"github.com/flipperdevices/go-metric/src/repository"
@@ -15,14 +15,23 @@ import (
 func main() {
 	ctx := context.Background()
 
-	db := ch.Connect(ch.WithDSN("clickhouse://localhost:19000/metric?sslmode=disable"))
+	var cfg models.Config
+
+	if err := env.Parse(&cfg); err != nil {
+		log.Fatalln("Config", err)
+	}
+	db := ch.Connect(
+		ch.WithAddr(cfg.DBAddr),
+		ch.WithDatabase(cfg.DBName),
+		ch.WithInsecure(true),
+	)
 	if err := db.Ping(ctx); err != nil {
 		panic(err)
 	}
 
 	repo := repository.New(db)
 
-	db.AddQueryHook(chdebug.NewQueryHook(chdebug.WithVerbose(true)))
+	//db.AddQueryHook(chdebug.NewQueryHook(chdebug.WithVerbose(true)))
 
 	if err := repo.ApplyMigration(ctx); err != nil {
 		panic(err)

@@ -56,7 +56,7 @@ func (r *Reporter) Report(w http.ResponseWriter, req *http.Request) {
 		err = r.repo.SaveEvent(req.Context(), chschema.UUID(id), platform, event)
 		if err != nil {
 			log.Println("Failed save event", err)
-			w.WriteHeader(http.StatusInsufficientStorage)
+			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 	}
