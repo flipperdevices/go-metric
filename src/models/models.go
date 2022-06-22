@@ -27,7 +27,7 @@ const (
 )
 
 type Open struct {
-	ch.CHModel `ch:"table:app_open"`
+	ch.CHModel `ch:"table:open"`
 
 	UUID     chschema.UUID
 	Platform Platform

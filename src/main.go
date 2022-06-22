@@ -31,7 +31,7 @@ func main() {
 
 	repo := repository.New(db)
 
-	//db.AddQueryHook(chdebug.NewQueryHook(chdebug.WithVerbose(true)))
+	// db.AddQueryHook(chdebug.NewQueryHook(chdebug.WithVerbose(true)))
 
 	if err := repo.ApplyMigration(ctx); err != nil {
 		panic(err)

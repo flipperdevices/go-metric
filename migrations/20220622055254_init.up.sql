@@ -1,4 +1,4 @@
-CREATE TABLE "app_open"
+CREATE TABLE "open"
 (
     uuid     UUID,
     platform Int32,

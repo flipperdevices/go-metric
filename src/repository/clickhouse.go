@@ -33,7 +33,7 @@ func (r *Repository) SaveEvent(
 	platform models.Platform,
 	event *proto.MetricEventsCollection,
 ) error {
-	var e any
+	q := r.db.NewInsert()
 	switch unpackedEvent := event.GetEvent().(type) {
 	case *proto.MetricEventsCollection_Open:
 		var target models.OpenTarget
@@ -53,21 +53,21 @@ func (r *Repository) SaveEvent(
 		case events.Open_EXPERIMENTAL_SCREENSTREAMING:
 			target = models.EXPERIMENTAL_SCREENSTREAMING
 		}
-		e = models.Open{
+		q = q.Model(&models.Open{
 			UUID:     uid,
 			Platform: platform,
 			Time:     time.Now(),
 			Target:   target,
-		}
+		})
 	case *proto.MetricEventsCollection_FlipperGattInfo:
-		e = models.FlipperGattInfo{
+		q = q.Model(&models.FlipperGattInfo{
 			UUID:           uid,
 			Platform:       platform,
 			Time:           time.Now(),
 			FlipperVersion: unpackedEvent.FlipperGattInfo.FlipperVersion,
-		}
+		})
 	case *proto.MetricEventsCollection_FlipperRpcInfo:
-		e = models.FlipperRpcInfo{
+		q = q.Model(&models.FlipperRpcInfo{
 			UUID:               uid,
 			Platform:           platform,
 			Time:               time.Now(),
@@ -76,9 +76,9 @@ func (r *Repository) SaveEvent(
 			InternalTotalBytes: unpackedEvent.FlipperRpcInfo.InternalTotalByte,
 			ExternalFreeBytes:  unpackedEvent.FlipperRpcInfo.ExternalFreeByte,
 			ExternalTotalBytes: unpackedEvent.FlipperRpcInfo.ExternalTotalByte,
-		}
+		})
 	case *proto.MetricEventsCollection_SynchronizationEnd:
-		e = models.SynchronizationEnd{
+		q = q.Model(&models.SynchronizationEnd{
 			UUID:                  uid,
 			Platform:              platform,
 			Time:                  time.Now(),
@@ -88,7 +88,7 @@ func (r *Repository) SaveEvent(
 			InfraredCount:         unpackedEvent.SynchronizationEnd.InfraredCount,
 			IButtonCount:          unpackedEvent.SynchronizationEnd.IbuttonCount,
 			SynchronizationTimeMs: unpackedEvent.SynchronizationEnd.SynchronizationTimeMs,
-		}
+		})
 	case *proto.MetricEventsCollection_UpdateFlipperEnd:
 		var status models.UpdateStatus
 		switch unpackedEvent.UpdateFlipperEnd.UpdateStatus {
@@ -105,7 +105,7 @@ func (r *Repository) SaveEvent(
 		case events.UpdateFlipperEnd_FAILED:
 			status = models.FAILED
 		}
-		e = models.UpdateFlipperEnd{
+		q = q.Model(&models.UpdateFlipperEnd{
 			UUID:         uid,
 			Platform:     platform,
 			Time:         time.Now(),
@@ -113,21 +113,21 @@ func (r *Repository) SaveEvent(
 			UpdateTo:     unpackedEvent.UpdateFlipperEnd.UpdateTo,
 			UpdateId:     unpackedEvent.UpdateFlipperEnd.UpdateId,
 			UpdateStatus: status,
-		}
+		})
 	case *proto.MetricEventsCollection_UpdateFlipperStart:
-		e = models.UpdateFlipperStart{
+		q = q.Model(&models.UpdateFlipperStart{
 			UUID:       uid,
 			Platform:   platform,
 			Time:       time.Now(),
 			UpdateFrom: unpackedEvent.UpdateFlipperStart.UpdateFrom,
 			UpdateTo:   unpackedEvent.UpdateFlipperStart.UpdateTo,
 			UpdateId:   unpackedEvent.UpdateFlipperStart.UpdateId,
-		}
+		})
 	default:
 		return errors.New("can't find table for event")
 	}
 
-	if _, err := r.db.NewInsert().Model(&e).Exec(ctx); err != nil {
+	if _, err := q.Exec(ctx); err != nil {
 		return err
 	}
 	return nil
