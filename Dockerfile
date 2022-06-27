@@ -20,6 +20,5 @@ COPY --from=builder /go/bin/app ./app
 COPY migrations migrations ./
 USER appuser
 
+EXPOSE 8081
 ENTRYPOINT ["/app/app"]
-
-
