@@ -44,6 +44,20 @@ func (r *Reporter) Report(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	var clickhouseSid *chschema.UUID = nil
+	if len(request.SessionUuid) > 0 {
+		id, err := uuid.Parse(request.SessionUuid)
+		if err == nil {
+			clickhouseSidOriginal := chschema.UUID(id)
+			clickhouseSid = &clickhouseSidOriginal
+		}
+	}
+
+	var appVersion *string = nil
+	if len(request.Version) > 0 {
+		appVersion = &request.Version
+	}
+
 	var platform models.Platform
 	switch request.Platform {
 	case pb.MetricReportRequest_ANDROID:
@@ -57,7 +71,12 @@ func (r *Reporter) Report(w http.ResponseWriter, req *http.Request) {
 	}
 
 	for _, event := range request.Events {
-		err = r.repo.SaveEvent(req.Context(), chschema.UUID(id), platform, event)
+		err = r.repo.SaveEvent(req.Context(),
+			chschema.UUID(id),
+			clickhouseSid,
+			appVersion,
+			platform,
+			event)
 		if err != nil {
 			log.Println("Failed save event", err)
 			w.WriteHeader(http.StatusBadRequest)

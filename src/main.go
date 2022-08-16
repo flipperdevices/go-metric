@@ -4,19 +4,18 @@ import (
 	"context"
 	"github.com/caarlos0/env/v6"
 	"github.com/flipperdevices/go-metric/src/models"
-	"github.com/uptrace/go-clickhouse/ch"
-	"log"
-	"net/http"
-
 	"github.com/flipperdevices/go-metric/src/reporter"
 	"github.com/flipperdevices/go-metric/src/repository"
+	"github.com/uptrace/go-clickhouse/ch"
+	"github.com/uptrace/go-clickhouse/chdebug"
+	"log"
+	"net/http"
 )
 
 func main() {
 	ctx := context.Background()
 
 	var cfg models.Config
-
 	if err := env.Parse(&cfg); err != nil {
 		log.Fatalln("Config", err)
 	}
@@ -31,7 +30,7 @@ func main() {
 
 	repo := repository.New(db)
 
-	// db.AddQueryHook(chdebug.NewQueryHook(chdebug.WithVerbose(true)))
+	db.AddQueryHook(chdebug.NewQueryHook(chdebug.WithVerbose(true)))
 
 	if err := repo.ApplyMigration(ctx); err != nil {
 		panic(err)

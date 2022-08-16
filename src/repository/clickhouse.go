@@ -30,6 +30,8 @@ func New(db *ch.DB) *Repository {
 func (r *Repository) SaveEvent(
 	ctx context.Context,
 	uid chschema.UUID,
+	sid *chschema.UUID,
+	version *string,
 	platform models.Platform,
 	event *proto.MetricEventsCollection,
 ) error {
@@ -54,16 +56,20 @@ func (r *Repository) SaveEvent(
 			target = models.EXPERIMENTAL_SCREENSTREAMING
 		}
 		q = q.Model(&models.Open{
-			UUID:     uid,
-			Platform: platform,
-			Time:     time.Now(),
-			Target:   target,
+			UUID:        uid,
+			Platform:    platform,
+			Time:        time.Now(),
+			UserSession: sid,
+			AppVersion:  version,
+			Target:      target,
 		})
 	case *proto.MetricEventsCollection_FlipperGattInfo:
 		q = q.Model(&models.FlipperGattInfo{
 			UUID:           uid,
 			Platform:       platform,
 			Time:           time.Now(),
+			UserSession:    sid,
+			AppVersion:     version,
 			FlipperVersion: unpackedEvent.FlipperGattInfo.FlipperVersion,
 		})
 	case *proto.MetricEventsCollection_FlipperRpcInfo:
@@ -71,6 +77,8 @@ func (r *Repository) SaveEvent(
 			UUID:               uid,
 			Platform:           platform,
 			Time:               time.Now(),
+			UserSession:        sid,
+			AppVersion:         version,
 			SdCardIsAvailable:  unpackedEvent.FlipperRpcInfo.SdcardIsAvailable,
 			InternalFreeBytes:  unpackedEvent.FlipperRpcInfo.InternalFreeByte,
 			InternalTotalBytes: unpackedEvent.FlipperRpcInfo.InternalTotalByte,
@@ -82,6 +90,8 @@ func (r *Repository) SaveEvent(
 			UUID:                  uid,
 			Platform:              platform,
 			Time:                  time.Now(),
+			UserSession:           sid,
+			AppVersion:            version,
 			SubGHZCount:           unpackedEvent.SynchronizationEnd.SubghzCount,
 			RFIDCount:             unpackedEvent.SynchronizationEnd.RfidCount,
 			NFCCount:              unpackedEvent.SynchronizationEnd.NfcCount,
@@ -109,6 +119,8 @@ func (r *Repository) SaveEvent(
 			UUID:         uid,
 			Platform:     platform,
 			Time:         time.Now(),
+			UserSession:  sid,
+			AppVersion:   version,
 			UpdateFrom:   unpackedEvent.UpdateFlipperEnd.UpdateFrom,
 			UpdateTo:     unpackedEvent.UpdateFlipperEnd.UpdateTo,
 			UpdateId:     unpackedEvent.UpdateFlipperEnd.UpdateId,
@@ -116,12 +128,14 @@ func (r *Repository) SaveEvent(
 		})
 	case *proto.MetricEventsCollection_UpdateFlipperStart:
 		q = q.Model(&models.UpdateFlipperStart{
-			UUID:       uid,
-			Platform:   platform,
-			Time:       time.Now(),
-			UpdateFrom: unpackedEvent.UpdateFlipperStart.UpdateFrom,
-			UpdateTo:   unpackedEvent.UpdateFlipperStart.UpdateTo,
-			UpdateId:   unpackedEvent.UpdateFlipperStart.UpdateId,
+			UUID:        uid,
+			Platform:    platform,
+			Time:        time.Now(),
+			UserSession: sid,
+			AppVersion:  version,
+			UpdateFrom:  unpackedEvent.UpdateFlipperStart.UpdateFrom,
+			UpdateTo:    unpackedEvent.UpdateFlipperStart.UpdateTo,
+			UpdateId:    unpackedEvent.UpdateFlipperStart.UpdateId,
 		})
 	default:
 		return errors.New("can't find table for event")

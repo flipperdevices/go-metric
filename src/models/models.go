@@ -31,18 +31,23 @@ const (
 type Open struct {
 	ch.CHModel `ch:"table:open"`
 
-	UUID     chschema.UUID
-	Platform Platform
-	Time     time.Time `ch:",pk"`
-	Target   OpenTarget
+	UUID        chschema.UUID
+	Platform    Platform
+	Time        time.Time `ch:",pk"`
+	UserSession *chschema.UUID
+	AppVersion  *string
+
+	Target OpenTarget
 }
 
 type FlipperGattInfo struct {
 	ch.CHModel `ch:"table:flipper_gatt_info"`
 
-	UUID     chschema.UUID
-	Platform Platform
-	Time     time.Time `ch:",pk"`
+	UUID        chschema.UUID
+	Platform    Platform
+	Time        time.Time `ch:",pk"`
+	UserSession *chschema.UUID
+	AppVersion  *string
 
 	FlipperVersion string
 }
@@ -50,9 +55,11 @@ type FlipperGattInfo struct {
 type FlipperRpcInfo struct {
 	ch.CHModel `ch:"table:flipper_rpc_info"`
 
-	UUID     chschema.UUID
-	Platform Platform
-	Time     time.Time `ch:",pk"`
+	UUID        chschema.UUID
+	Platform    Platform
+	Time        time.Time `ch:",pk"`
+	UserSession *chschema.UUID
+	AppVersion  *string
 
 	SdCardIsAvailable  bool
 	InternalFreeBytes  int64
@@ -64,9 +71,11 @@ type FlipperRpcInfo struct {
 type SynchronizationEnd struct {
 	ch.CHModel `ch:"table:synchronization_end"`
 
-	UUID     chschema.UUID
-	Platform Platform
-	Time     time.Time `ch:",pk"`
+	UUID        chschema.UUID
+	Platform    Platform
+	Time        time.Time `ch:",pk"`
+	UserSession *chschema.UUID
+	AppVersion  *string
 
 	SubGHZCount           int32
 	RFIDCount             int32
@@ -90,9 +99,11 @@ const (
 type UpdateFlipperEnd struct {
 	ch.CHModel `ch:"table:update_flipper_end"`
 
-	UUID     chschema.UUID
-	Platform Platform
-	Time     time.Time `ch:",pk"`
+	UUID        chschema.UUID
+	Platform    Platform
+	Time        time.Time `ch:",pk"`
+	UserSession *chschema.UUID
+	AppVersion  *string
 
 	UpdateFrom   string
 	UpdateTo     string
@@ -103,9 +114,12 @@ type UpdateFlipperEnd struct {
 type UpdateFlipperStart struct {
 	ch.CHModel `ch:"table:update_flipper_start"`
 
-	UUID       chschema.UUID
-	Platform   Platform
-	Time       time.Time `ch:",pk"`
+	UUID        chschema.UUID
+	Platform    Platform
+	Time        time.Time `ch:",pk"`
+	UserSession *chschema.UUID
+	AppVersion  *string
+
 	UpdateFrom string
 	UpdateTo   string
 	UpdateId   int64
