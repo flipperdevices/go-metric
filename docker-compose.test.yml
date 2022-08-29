@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  clickhouse:
+    build:
+      context: .
+      dockerfile: clickhouse.Dockerfile
+    environment:
+      CLICKHOUSE_DB: "metric"
+    restart: "no"
+    ports:
+      - "9000:9000"
+      - "8123:8123"
+    volumes:
+      - ./data/clickhouse:/var/lib/clickhouse/
