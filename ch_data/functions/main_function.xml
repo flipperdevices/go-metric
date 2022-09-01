@@ -1,0 +1,28 @@
+<functions>
+    <function>
+        <type>executable</type>
+        <name>sem_ver_gt</name>
+        <return_type>UInt8</return_type>
+        <argument>
+            <type>String</type>
+        </argument>
+        <argument>
+            <type>String</type>
+        </argument>
+        <format>TabSeparated</format>
+        <command>sem_ver_gt.py</command>
+    </function>
+    <function>
+        <type>executable</type>
+        <name>sem_ver_ge</name>
+        <return_type>UInt8</return_type>
+        <argument>
+            <type>String</type>
+        </argument>
+        <argument>
+            <type>String</type>
+        </argument>
+        <format>TabSeparated</format>
+        <command>sem_ver_ge.py</command>
+    </function>
+</functions>

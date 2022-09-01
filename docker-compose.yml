@@ -2,14 +2,18 @@ version: "3.9"
 
 services:
   clickhouse:
-    image: "clickhouse/clickhouse-server:latest"
+    build:
+      context: .
+      dockerfile: clickhouse.Dockerfile
     environment:
       CLICKHOUSE_DB: "metric"
     restart: always
     volumes:
       - clickhouse:/var/lib/clickhouse/
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: app.Dockerfile
     restart: always
     depends_on:
       - clickhouse

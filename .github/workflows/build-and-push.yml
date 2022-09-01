@@ -32,6 +32,15 @@ jobs:
           push: true
           tags: ghcr.io/flipperdevices/go-metric:latest
           context: .
+          file: app.Dockerfile
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ghcr.io/flipperdevices/metric-clickhouse:latest
+          context: .
+          file: clickhouse.Dockerfile
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
