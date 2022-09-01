@@ -26,7 +26,7 @@ jobs:
           password: ${{ secrets.CR_PAT }}
       -
         name: Build and push
-        id: docker_build
+        id: docker_build_app
         uses: docker/build-push-action@v2
         with:
           push: true
@@ -34,7 +34,7 @@ jobs:
           context: .
           file: app.Dockerfile
       - name: Build and push
-        id: docker_build
+        id: docker_build_clickhouse
         uses: docker/build-push-action@v2
         with:
           push: true
