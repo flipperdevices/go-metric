@@ -137,6 +137,22 @@ func (r *Repository) SaveEvent(
 			UpdateTo:    unpackedEvent.UpdateFlipperStart.UpdateTo,
 			UpdateId:    unpackedEvent.UpdateFlipperStart.UpdateId,
 		})
+	case *proto.MetricEventsCollection_SubghzProvisioning:
+		q = q.Model(&models.SubGhzProvisioning{
+			UUID:           uid,
+			Platform:       platform,
+			Time:           time.Now(),
+			UserSession:    sid,
+			AppVersion:     version,
+			RegionNetwork:  unpackedEvent.SubghzProvisioning.RegionNetwork,
+			RegionSim1:     unpackedEvent.SubghzProvisioning.RegionSim_1,
+			RegionSim2:     unpackedEvent.SubghzProvisioning.RegionSim_2,
+			RegionIp:       unpackedEvent.SubghzProvisioning.RegionIp,
+			RegionSystem:   unpackedEvent.SubghzProvisioning.RegionSystem,
+			RegionProvided: unpackedEvent.SubghzProvisioning.RegionProvided,
+			IsRoaming:      unpackedEvent.SubghzProvisioning.IsRoaming,
+		})
+
 	default:
 		return errors.New("can't find table for event")
 	}

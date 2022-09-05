@@ -124,3 +124,21 @@ type UpdateFlipperStart struct {
 	UpdateTo   string
 	UpdateId   int64
 }
+
+type SubGhzProvisioning struct {
+	ch.CHModel `ch:"table:subghz_provisioning"`
+
+	UUID        chschema.UUID
+	Platform    Platform
+	Time        time.Time `ch:",pk"`
+	UserSession *chschema.UUID
+	AppVersion  *string
+
+	RegionNetwork  string
+	RegionSim1     string
+	RegionSim2     string
+	RegionIp       string
+	RegionSystem   string
+	RegionProvided string
+	IsRoaming      bool
+}
