@@ -54,7 +54,7 @@ func main() {
 		cmd.Stderr = os.Stderr
 
 		if err := cmd.Run(); err != nil {
-			log.Fatal("Failed generating", path)
+			log.Fatal("Failed generating", path, err)
 		}
 	}
 }

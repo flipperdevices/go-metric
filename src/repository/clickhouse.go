@@ -54,7 +54,14 @@ func (r *Repository) SaveEvent(
 			target = models.EXPERIMENTAL_FM
 		case events.Open_EXPERIMENTAL_SCREENSTREAMING:
 			target = models.EXPERIMENTAL_SCREENSTREAMING
+		case events.Open_SHARE_SHORTLINK:
+			target = models.SHARE_SHORTLINK
+		case events.Open_SHARE_LONGLINK:
+			target = models.SHARE_LONGLINK
+		case events.Open_SHARE_FILE:
+			target = models.SHARE_FILE
 		}
+
 		q = q.Model(&models.Open{
 			UUID:        uid,
 			Platform:    platform,
