@@ -27,6 +27,16 @@ func New(db *ch.DB) *Repository {
 	}
 }
 
+func (r *Repository) CheckDb(
+	ctx context.Context,
+) (bool, error) {
+	var num int
+	if err := r.db.QueryRowContext(ctx, "SELECT 1").Scan(&num); err != nil {
+		return false, err
+	}
+	return num == 1, nil
+}
+
 func (r *Repository) SaveEvent(
 	ctx context.Context,
 	uid chschema.UUID,

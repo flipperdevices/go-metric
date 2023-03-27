@@ -38,6 +38,7 @@ func main() {
 	report := reporter.New(repo)
 
 	http.HandleFunc("/report", report.Report)
+	http.HandleFunc("/healthcheck", report.GetInfo)
 
 	log.Fatal(http.ListenAndServe(":8081", nil))
 }
