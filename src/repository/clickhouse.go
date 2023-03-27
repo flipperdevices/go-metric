@@ -60,6 +60,12 @@ func (r *Repository) SaveEvent(
 			target = models.SHARE_LONGLINK
 		case events.Open_SHARE_FILE:
 			target = models.SHARE_FILE
+		case events.Open_SAVE_DUMP:
+			target = models.SAVE_DUMP
+		case events.Open_MFKEY32:
+			target = models.MFKEY32
+		case events.Open_OPEN_NFC_DUMP_EDITOR:
+			target = models.OPEN_NFC_DUMP_EDITOR
 		}
 
 		q = q.Model(&models.Open{

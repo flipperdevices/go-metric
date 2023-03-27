@@ -49,6 +49,7 @@ func main() {
 			log.Fatalln(err)
 		}
 		args = append(args, protoFiles...)
+		log.Print(args)
 		cmd := exec.Command("protoc", args...)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
