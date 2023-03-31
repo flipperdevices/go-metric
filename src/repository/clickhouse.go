@@ -121,6 +121,7 @@ func (r *Repository) SaveEvent(
 			InfraredCount:         unpackedEvent.SynchronizationEnd.InfraredCount,
 			IButtonCount:          unpackedEvent.SynchronizationEnd.IbuttonCount,
 			SynchronizationTimeMs: unpackedEvent.SynchronizationEnd.SynchronizationTimeMs,
+			ChangesCount:          unpackedEvent.SynchronizationEnd.ChangesCount,
 		})
 	case *proto.MetricEventsCollection_UpdateFlipperEnd:
 		var status models.UpdateStatus

@@ -89,6 +89,7 @@ type SynchronizationEnd struct {
 	InfraredCount         int32
 	IButtonCount          int32
 	SynchronizationTimeMs int64
+	ChangesCount          int32
 }
 
 type UpdateStatus int32
