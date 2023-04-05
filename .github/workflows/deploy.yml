@@ -38,16 +38,16 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
 
-      - name: 'Build and push'
+      - name: 'Build and push go-metric'
         id: docker_build_app
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ghcr.io/flipperdevices/go-metric:latest
+          tags: ghcr.io/flipperdevices/go-metric:${{steps.tag.outputs.image_tag}}
           context: .
           file: app.Dockerfile
 
-      - name: 'Build and push'
+      - name: 'Build and push Clickhouse'
         id: docker_build_clickhouse
         uses: docker/build-push-action@v2
         with:
