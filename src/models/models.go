@@ -72,6 +72,8 @@ type FlipperRpcInfo struct {
 	InternalTotalBytes int64
 	ExternalFreeBytes  int64
 	ExternalTotalBytes int64
+	FirmwareForkName   *string
+	FirmwareGitUrl     *string
 }
 
 type SynchronizationEnd struct {
