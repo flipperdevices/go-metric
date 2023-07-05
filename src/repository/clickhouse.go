@@ -96,6 +96,14 @@ func (r *Repository) SaveEvent(
 			FlipperVersion: unpackedEvent.FlipperGattInfo.FlipperVersion,
 		})
 	case *proto.MetricEventsCollection_FlipperRpcInfo:
+		var forkName *string = nil
+		if len(unpackedEvent.FlipperRpcInfo.FirmwareForkName) > 0 {
+			forkName = &unpackedEvent.FlipperRpcInfo.FirmwareForkName
+		}
+		var gitUrl *string = nil
+		if len(unpackedEvent.FlipperRpcInfo.FirmwareGitUrl) > 0 {
+			gitUrl = &unpackedEvent.FlipperRpcInfo.FirmwareGitUrl
+		}
 		q = q.Model(&models.FlipperRpcInfo{
 			UUID:               uid,
 			Platform:           platform,
@@ -107,6 +115,8 @@ func (r *Repository) SaveEvent(
 			InternalTotalBytes: unpackedEvent.FlipperRpcInfo.InternalTotalByte,
 			ExternalFreeBytes:  unpackedEvent.FlipperRpcInfo.ExternalFreeByte,
 			ExternalTotalBytes: unpackedEvent.FlipperRpcInfo.ExternalTotalByte,
+			FirmwareForkName:   forkName,
+			FirmwareGitUrl:     gitUrl,
 		})
 	case *proto.MetricEventsCollection_SynchronizationEnd:
 		q = q.Model(&models.SynchronizationEnd{
