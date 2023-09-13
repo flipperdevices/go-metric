@@ -76,6 +76,23 @@ func (r *Repository) SaveEvent(
 			target = models.MFKEY32
 		case events.Open_OPEN_NFC_DUMP_EDITOR:
 			target = models.OPEN_NFC_DUMP_EDITOR
+		case events.Open_OPEN_FAPHUB:
+			target = models.OPEN_FAPHUB
+		case events.Open_OPEN_FAPHUB_CATEGORY:
+			target = models.OPEN_FAPHUB_CATEGORY
+		case events.Open_OPEN_FAPHUB_SEARCH:
+			target = models.OPEN_FAPHUB_SEARCH
+		case events.Open_OPEN_FAPHUB_APP:
+			target = models.OPEN_FAPHUB_APP
+		case events.Open_INSTALL_FAPHUB_APP:
+			target = models.INSTALL_FAPHUB_APP
+		case events.Open_HIDE_FAPHUB_APP:
+			target = models.HIDE_FAPHUB_APP
+		}
+
+		var arg *string = nil
+		if len(unpackedEvent.Open.Arg) > 0 {
+			arg = &unpackedEvent.Open.Arg
 		}
 
 		q = q.Model(&models.Open{
@@ -85,6 +102,7 @@ func (r *Repository) SaveEvent(
 			UserSession: sid,
 			AppVersion:  version,
 			Target:      target,
+			Arg:         arg,
 		})
 	case *proto.MetricEventsCollection_FlipperGattInfo:
 		q = q.Model(&models.FlipperGattInfo{

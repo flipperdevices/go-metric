@@ -32,6 +32,12 @@ const (
 	SAVE_DUMP
 	MFKEY32
 	OPEN_NFC_DUMP_EDITOR
+	OPEN_FAPHUB
+	OPEN_FAPHUB_CATEGORY
+	OPEN_FAPHUB_SEARCH
+	OPEN_FAPHUB_APP
+	INSTALL_FAPHUB_APP
+	HIDE_FAPHUB_APP
 )
 
 type Open struct {
@@ -44,6 +50,7 @@ type Open struct {
 	AppVersion  *string
 
 	Target OpenTarget
+	Arg    *string
 }
 
 type FlipperGattInfo struct {
