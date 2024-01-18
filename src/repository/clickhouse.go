@@ -204,6 +204,16 @@ func (r *Repository) SaveEvent(
 			RegionProvided: unpackedEvent.SubghzProvisioning.RegionProvided,
 			IsRoaming:      unpackedEvent.SubghzProvisioning.IsRoaming,
 		})
+	case *proto.MetricEventsCollection_DebugInfo:
+		q = q.Model(&models.DebugInfo{
+			UUID:        uid,
+			Platform:    platform,
+			Time:        time.Now(),
+			UserSession: sid,
+			AppVersion:  version,
+			Key:         unpackedEvent.DebugInfo.Key,
+			Value:       unpackedEvent.DebugInfo.Value,
+		})
 
 	default:
 		return errors.New("can't find table for event")

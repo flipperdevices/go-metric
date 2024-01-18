@@ -158,3 +158,16 @@ type SubGhzProvisioning struct {
 	RegionProvided string
 	IsRoaming      bool
 }
+
+type DebugInfo struct {
+	ch.CHModel `ch:"table:debug_info_metric"`
+
+	UUID        chschema.UUID
+	Platform    Platform
+	Time        time.Time `ch:",pk"`
+	UserSession *chschema.UUID
+	AppVersion  *string
+
+	Key   string
+	Value string
+}
