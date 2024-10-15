@@ -88,6 +88,10 @@ func (r *Repository) SaveEvent(
 			target = models.INSTALL_FAPHUB_APP
 		case events.Open_HIDE_FAPHUB_APP:
 			target = models.HIDE_FAPHUB_APP
+		case events.Open_OPEN_INFRARED_LIBRARY:
+			target = models.OPEN_INFRARED_LIBRARY
+		case events.Open_SAVE_INFRARED_LIBRARY:
+			target = models.SAVE_INFRARED_LIBRARY
 		}
 
 		var arg *string = nil
